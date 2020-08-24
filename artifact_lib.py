@@ -5,6 +5,17 @@ import requests
 
 API_URL="https://api.github.com"
 
+def test_rate():
+    url = "https://api.github.com/rate_limit"
+    response = requests.get(url)
+    json = response.json()
+    remaining = json['resources']['core']['remaining']
+    return remaining
+
+if test_rate() == 0:
+    print("Sorry, it seems like you've reached your api rate limit!")
+    print("I recommend you wait a bit, and rerun this program.")
+    exit(1)
 
 def get_workflow_id(workflow_name, OWNER, REPO):
   response = requests.get("%s/repos/%s/%s/actions/workflows" % (API_URL, OWNER, REPO))
