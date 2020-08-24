@@ -10,18 +10,6 @@ WORKFLOW_NAME="Yatopia Build Script"
 WORKFLOW_EVENT="push"
 # ARTIFACT_NAME="Yatopia-14"
 
-def test_rate():
-    url = "https://api.github.com/rate_limit"
-    response = requests.get(url)
-    json = response.json()
-    remaining = json['resources']['core']['remaining']
-    return remaining
-
-if test_rate() == 0:
-    print("Sorry, it seems like you've reached your api rate limit!")
-    print("I recommend you wait a bit, and rerun this program.")
-    exit(1)
-
 def list_branches():
     url = "https://api.github.com/repos/{}/{}/branches".format(OWNER, REPO)
     response = requests.get(url)
