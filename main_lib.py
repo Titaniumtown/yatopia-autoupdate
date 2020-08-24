@@ -56,59 +56,41 @@ def artifact_func_2():
     OWNER="YatopiaMC"
     REPO="Yatopia"
     url = "https://github.com/%s/%s/actions" % (OWNER, REPO)
-    # r = requests.get(url)
     source = urllib.request.urlopen(url).read()
-    # print(source)
+    branch_list = list_branches(OWNER, REPO)
 
     def get_run_branch(url):
         source = urllib.request.urlopen(url).read()
         soup = bs.BeautifulSoup(source, 'lxml')
-        for url in soup.find_all('a'):
-            href = url.get('href')
-            if "/%s/%s/compare/" % (OWNER, REPO) in href:
-                return href.replace("/%s/%s/compare/" % (OWNER, REPO), "")
-    branch_list = list_branches(OWNER, REPO)
+        for url in soup.find_all('span'):
+            data = url.get('title')
+            if data in branch_list:
+                return data
+    
 
     soup = bs.BeautifulSoup(source, 'lxml')
-    list_runs = []
-    runs_dict = {}
-    
-    for BRANCH in branch_list:
-        runs_dict[BRANCH] = dict()
     
     runs_num_list = []
     for url in soup.find_all('a'):
         href = str(url.get('href'))
         if "actions/runs" in href and "/workflow" not in href:
             run_num = href.replace(str(OWNER+"/"+REPO+"/actions/runs/"), '').replace('/', '')
-            # print(run_num)
             runs_num_list.append(run_num)
     
-
+    runs_all_dict = {}
+    for BRANCH in branch_list:
+        runs_all_dict[BRANCH] = list()
+    
     for run_num in runs_num_list:
         url = str("https://www.github.com/"+OWNER+"/"+REPO+"/actions/runs/"+run_num)
         # print(url)
         output_branch = get_run_branch(url)
+        print(output_branch)
         
         if output_branch in branch_list:
-            list_runs.append(run_num)
+            runs_all_dict[output_branch].append(run_num)
 
     del runs_num_list
     
 
-    organized_run_list = []
-    for BRANCH in branch_list:
-        organized_run_list[BRANCH] = list()
-
-    for run_num in list_runs:
-        url = str("https://www.github.com/"+OWNER+"/"+REPO+"/actions/runs/"+run_num)
-        output_branch = get_run_branch(url)
-        organized_run_list[output_branch].append(run_num)
-
-    
-
-
-
-
-    
-    print(organized_run_list)
+    print(runs_all_dict)
