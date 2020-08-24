@@ -17,19 +17,22 @@ if test_rate() == 0:
     print("I recommend you wait a bit, and rerun this program.")
     exit(1)
 
-def get_workflow_id(workflow_name, OWNER, REPO):
+def get_workflow_id(workflow_name, OWNER, REPO, verbose):
   response = requests.get("%s/repos/%s/%s/actions/workflows" % (API_URL, OWNER, REPO))
-  print(response.status_code)
+  if verbose == True:
+    print(response.status_code)
   json = response.json()
   for workflow in json['workflows']:
     if workflow['name'] == workflow_name:
-      print(workflow['name'])
+      if verbose == True:
+        print(workflow['name'])
       return workflow['id']
   return None #FIXME: Exception
 
-def get_latest_workflow_run_id(workflow_id, workflow_event, OWNER, REPO, BRANCH):
+def get_latest_workflow_run_id(workflow_id, workflow_event, OWNER, REPO, BRANCH, verbose):
   response = requests.get("%s/repos/%s/%s/actions/workflows/%s/runs" % (API_URL, OWNER, REPO, workflow_id))
-  print(response.status_code)
+  if verbose == True:
+    print(response.status_code)
   json = response.json()
   for workflow_run in json['workflow_runs']:
 
@@ -51,9 +54,10 @@ def get_latest_workflow_run_id(workflow_id, workflow_event, OWNER, REPO, BRANCH)
 
   return None #FIXME: Exception
 
-def get_artifact_id(workflow_run_id, name, OWNER, REPO):
+def get_artifact_id(workflow_run_id, name, OWNER, REPO, verbose):
   response = requests.get("%s/repos/%s/%s/actions/runs/%s/artifacts" % (API_URL, OWNER, REPO, workflow_run_id))
-  print(response.status_code)
+  if verbose == True:
+    print(response.status_code)
   json = response.json()
   for artifact in json['artifacts']:
 
@@ -63,15 +67,18 @@ def get_artifact_id(workflow_run_id, name, OWNER, REPO):
 
   return None #FIXME: Exception
 
-def get_latest_artifact_url(workflow_name, worfklow_event, artifact_name, OWNER, REPO, BRANCH):
+def get_latest_artifact_url(workflow_name, worfklow_event, artifact_name, OWNER, REPO, BRANCH, verbose):
 
-  workflow_id = get_workflow_id(workflow_name, OWNER, REPO)
-  print("found workflow %d" % workflow_id)
+  workflow_id = get_workflow_id(workflow_name, OWNER, REPO, verbose)
+  if verbose == True:
+    print("found workflow %d" % workflow_id)
 
-  workflow_run_id = get_latest_workflow_run_id(workflow_id, worfklow_event, OWNER, REPO, BRANCH)
-  print("found workflow_run_id %d" % workflow_run_id)
+  workflow_run_id = get_latest_workflow_run_id(workflow_id, worfklow_event, OWNER, REPO, BRANCH, verbose)
+  if verbose == True:
+    print("found workflow_run_id %d" % workflow_run_id)
 
-  artifact_id = get_artifact_id(workflow_run_id, artifact_name, OWNER, REPO)
-  print("found artifact_id %d" % workflow_run_id)
+  artifact_id = get_artifact_id(workflow_run_id, artifact_name, OWNER, REPO, verbose)
+  if verbose == True:
+    print("found artifact_id %d" % workflow_run_id)
 
   return "%s/repos/%s/%s/actions/artifacts/%s/zip" % (API_URL, OWNER, REPO, artifact_id)
