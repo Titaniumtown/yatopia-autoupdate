@@ -1,3 +1,3 @@
-[submodule "my-python-lib"]
-	path = my-python-lib
+[submodule "my_python_lib"]
+	path = my_python_lib
 	url = https://github.com/Titaniumtown/my-python-lib

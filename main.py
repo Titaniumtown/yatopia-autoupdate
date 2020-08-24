@@ -1,6 +1,6 @@
 from artifact_lib import get_latest_artifact_url
 import requests
-
+from my-python-lib/my_library.py import run_command
 
 # https://github.com/YatopiaMC/Yatopia
 OWNER="YatopiaMC"
