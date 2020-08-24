@@ -6,7 +6,7 @@ import requests
 API_URL="https://api.github.com"
 
 def test_rate():
-    url = "https://api.github.com/rate_limit"
+    url = str(API_URL+"/rate_limit")
     response = requests.get(url)
     json = response.json()
     remaining = json['resources']['core']['remaining']
