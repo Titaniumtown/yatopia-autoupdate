@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler
 import requests
 
 API_URL="https://api.github.com"
