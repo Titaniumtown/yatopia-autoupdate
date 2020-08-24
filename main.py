@@ -1,3 +1,4 @@
-from main_lib import artifact_func
+from main_lib import *
 
-print(artifact_func())
+# print(artifact_func())
+artifact_func_2()
