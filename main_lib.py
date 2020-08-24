@@ -9,7 +9,8 @@ def artifact_func():
 
     WORKFLOW_NAME="Yatopia Build Script"
     WORKFLOW_EVENT="push"
-
+    verbose = False
+    
     def list_branches():
         url = "https://api.github.com/repos/{}/{}/branches".format(OWNER, REPO)
         response = requests.get(url)
