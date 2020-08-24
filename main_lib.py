@@ -9,7 +9,6 @@ def artifact_func():
 
     WORKFLOW_NAME="Yatopia Build Script"
     WORKFLOW_EVENT="push"
-    verbose = False
 
     def list_branches():
         url = "https://api.github.com/repos/{}/{}/branches".format(OWNER, REPO)
@@ -35,13 +34,11 @@ def artifact_func():
     for BRANCH in branch_list:
         artifact_dict[BRANCH] = dict()
         for ARTIFACT_NAME in artifact_name_list:
-            tmp = get_latest_artifact_url(WORKFLOW_NAME, WORKFLOW_EVENT, ARTIFACT_NAME, OWNER, REPO, BRANCH, verbose)
             if ARTIFACT_NAME == "Yatopia-8":
-                artifact_dict[BRANCH]["java-8"] = tmp
+                artifact_dict[BRANCH]["java-8"] = get_latest_artifact_url(WORKFLOW_NAME, WORKFLOW_EVENT, ARTIFACT_NAME, OWNER, REPO, BRANCH, verbose)
             elif ARTIFACT_NAME == "Yatopia-11":
-                artifact_dict[BRANCH]["java-11"] = tmp
+                artifact_dict[BRANCH]["java-11"] = get_latest_artifact_url(WORKFLOW_NAME, WORKFLOW_EVENT, ARTIFACT_NAME, OWNER, REPO, BRANCH, verbose)
             elif ARTIFACT_NAME == "Yatopia-14":
-                artifact_dict[BRANCH]["java-14"] = tmp
-            del tmp
+                artifact_dict[BRANCH]["java-14"] = get_latest_artifact_url(WORKFLOW_NAME, WORKFLOW_EVENT, ARTIFACT_NAME, OWNER, REPO, BRANCH, verbose)
 
     return artifact_dict
